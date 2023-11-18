@@ -1,5 +1,6 @@
 package com.irfan.security.service;
 
+import com.irfan.security.config.CustomAuthenticationManager;
 import com.irfan.security.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +40,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager() throws Exception {
+        return new CustomAuthenticationManager();
     }
 
     @Bean
