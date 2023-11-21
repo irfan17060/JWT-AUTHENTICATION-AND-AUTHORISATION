@@ -23,15 +23,17 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
 
-        var user = User.builder()
+        boolean isPresent = userRepo.findByEmail(request.getEmail()).isPresent();
+        var user = isPresent
+                ? userRepo.findByEmail(request.getEmail()).get()
+                : User.builder()
                 .firstName(request.getFirstname())
                 .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-
-        var savedUser = userRepo.save(user);
+        var savedUser = isPresent ? user : userRepo.save(user);
 
         log.info("saved user {}", savedUser.getEmail());
 
