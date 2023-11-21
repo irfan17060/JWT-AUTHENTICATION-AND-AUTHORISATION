@@ -23,15 +23,13 @@ public class JWTService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
-
-
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsTFunction) {
         final Claims claims = extractAllClaims(token);
-        return claimsTFunction.apply(claims);
+        return claims!=null ? claimsTFunction.apply(claims) : null;
     }
 
     private Claims extractAllClaims(String token) {
